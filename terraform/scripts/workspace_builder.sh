@@ -38,7 +38,7 @@ function plugins_v0.13+ {
         provider_name=$(<"${plugin}/.provider_name")
         version=$(<"${plugin}/.version")
         plugin_dir="${PLUGIN_DIR}/${registry}/${namespace}/${provider_name}/${version}/${CONFIG_OS}_${CONFIG_ARCH}"
-        plugin_bin="$(find "$plugin" -not -path '*/\.*' -type f | head -n1)"
+        plugin_bin="$(find "$plugin" -name 'terraform-*' -type f)"
         mkdir -p "${plugin_dir}"
         cp "$plugin_bin" "${plugin_dir}/"
     done
