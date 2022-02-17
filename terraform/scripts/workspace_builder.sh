@@ -70,22 +70,22 @@ function modules {
 
     for module in "${!MODULE_PATHS[@]}"; do
         path="${MODULE_PATHS[$module]}"
-        find "${PKG_DIR}" -maxdepth 1 -name "*.tf" -exec sed -i "s#${module}#${rel_module_dir}/$(basename "${path}")#g" {} +
+        find "${PKG_DIR}" -maxdepth 1 -name "*.tf" -exec sed -i '' -e "s#${module}#${rel_module_dir}/$(basename "${path}")#g" {} +
     done
 }
 
 
-# build_env_to_tf_srcs replaces various BUILD-time 
+# build_env_to_tf_srcs replaces various BUILD-time
 # environment variables in the Terraform source files.
 # This is useful for re-using source file in multiple workspaces,
 # such as templating a Terraform remote state configuration.
 function build_env_to_tf_srcs {
-    find "${PKG_DIR}" -maxdepth 1 -name "*.tf" -exec sed -i "s#\$PKG#${PKG}#g" {} +
-    find "${PKG_DIR}" -maxdepth 1 -name "*.tf" -exec sed -i "s#\$PKG_DIR#${PKG_DIR}#g" {} +
+    find "${PKG_DIR}" -maxdepth 1 -name "*.tf" -exec sed -i '' -e "s#\$PKG#${PKG}#g" {} +
+    find "${PKG_DIR}" -maxdepth 1 -name "*.tf" -exec sed -i '' -e "s#\$PKG_DIR#${PKG_DIR}#g" {} +
     NAME="$(echo "${NAME}" | sed 's/^_\(.*\)_wd$/\1/')"
-    find "${PKG_DIR}" -maxdepth 1 -name "*.tf" -exec sed -i "s#\$NAME#${NAME}#g" {} +
-    find "${PKG_DIR}" -maxdepth 1 -name "*.tf" -exec sed -i "s#\$ARCH#${ARCH}#g" {} +
-    find "${PKG_DIR}" -maxdepth 1 -name "*.tf" -exec sed -i "s#\$OS#${OS}#g" {} +
+    find "${PKG_DIR}" -maxdepth 1 -name "*.tf" -exec sed -i '' -e "s#\$NAME#${NAME}#g" {} +
+    find "${PKG_DIR}" -maxdepth 1 -name "*.tf" -exec sed -i '' -e "s#\$ARCH#${ARCH}#g" {} +
+    find "${PKG_DIR}" -maxdepth 1 -name "*.tf" -exec sed -i '' -e "s#\$OS#${OS}#g" {} +
 }
 
 # copy modules
@@ -97,6 +97,6 @@ fi
 build_env_to_tf_srcs
 
 # shift srcs into outs
-for src in $SRCS_SRCS; do 
+for src in $SRCS_SRCS; do
     cp "${src}" "${OUTS}/"
 done

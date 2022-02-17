@@ -6,20 +6,20 @@ set -euo pipefail
 
 # dependencies prepares a module dependencies for a module
 # A Terraform module can have dependencies and can be depended on.
-# To accomodate this, we add 
+# To accomodate this, we add
 function dependencies {
     mkdir "${OUTS}/modules/"
     for m in $SRCS_DEPS; do
         replace=$(basename "$m")
         mapfile -t searches <"${m}/.module_source_searches"
         for search in "${searches[@]}"; do
-            find . -name "*.tf" -exec sed -i  "s#[^\"]*${search}[^\"]*#./modules/${replace}#g" {} +
+            find . -name "*.tf" -exec sed -i '' -e "s#[^\"]*${search}[^\"]*#./modules/${replace}#g" {} +
         done
         cp -r "$m" "${OUTS}/modules/"
     done
 }
 
-# dependants prepares the module for having dependants 
+# dependants prepares the module for having dependants
 function dependants {
     # add a replace-me search for an interesting part of the URL
     echo "${URL}" | cut -f3-5 -d/ > "${OUTS}/.module_source_searches"
